@@ -1,1 +1,1 @@
-# Creditcard_Fraud_Detection/Codeclause_Internship
+Codeclause_Internship_Project
