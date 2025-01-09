@@ -1,0 +1,737 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyObYZfy7CUiJdQz85vZZP+6",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/pragnesha02/CodeClause_Internship_Project/blob/main/Level%201\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "id": "t3dJfyUoaB-Z"
+      },
+      "outputs": [],
+      "source": [
+        "import pandas as pd\n",
+        "import numpy as np\n",
+        "import matplotlib.pyplot as plt\n",
+        "import seaborn as sns"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "data=pd.read_csv('dataset.csv')\n",
+        "print(data.head(3))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Mi8fI32FagRp",
+        "outputId": "f81d17b1-d699-4381-d7ec-35f2c2480a92"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "   Restaurant ID         Restaurant Name  Country Code              City  \\\n",
+            "0        6317637        Le Petit Souffle           162       Makati City   \n",
+            "1        6304287        Izakaya Kikufuji           162       Makati City   \n",
+            "2        6300002  Heat - Edsa Shangri-La           162  Mandaluyong City   \n",
+            "\n",
+            "                                             Address  \\\n",
+            "0  Third Floor, Century City Mall, Kalayaan Avenu...   \n",
+            "1  Little Tokyo, 2277 Chino Roces Avenue, Legaspi...   \n",
+            "2  Edsa Shangri-La, 1 Garden Way, Ortigas, Mandal...   \n",
+            "\n",
+            "                                     Locality  \\\n",
+            "0   Century City Mall, Poblacion, Makati City   \n",
+            "1  Little Tokyo, Legaspi Village, Makati City   \n",
+            "2  Edsa Shangri-La, Ortigas, Mandaluyong City   \n",
+            "\n",
+            "                                    Locality Verbose   Longitude   Latitude  \\\n",
+            "0  Century City Mall, Poblacion, Makati City, Mak...  121.027535  14.565443   \n",
+            "1  Little Tokyo, Legaspi Village, Makati City, Ma...  121.014101  14.553708   \n",
+            "2  Edsa Shangri-La, Ortigas, Mandaluyong City, Ma...  121.056831  14.581404   \n",
+            "\n",
+            "                           Cuisines  ...          Currency Has Table booking  \\\n",
+            "0        French, Japanese, Desserts  ...  Botswana Pula(P)               Yes   \n",
+            "1                          Japanese  ...  Botswana Pula(P)               Yes   \n",
+            "2  Seafood, Asian, Filipino, Indian  ...  Botswana Pula(P)               Yes   \n",
+            "\n",
+            "  Has Online delivery Is delivering now Switch to order menu Price range  \\\n",
+            "0                  No                No                   No           3   \n",
+            "1                  No                No                   No           3   \n",
+            "2                  No                No                   No           4   \n",
+            "\n",
+            "   Aggregate rating  Rating color Rating text Votes  \n",
+            "0               4.8    Dark Green   Excellent   314  \n",
+            "1               4.5    Dark Green   Excellent   591  \n",
+            "2               4.4         Green   Very Good   270  \n",
+            "\n",
+            "[3 rows x 21 columns]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(data.info())"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "lhqKtq7Kapzo",
+        "outputId": "48eaa441-c36e-47c0-87c0-4fbe6e88a7d0"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 9551 entries, 0 to 9550\n",
+            "Data columns (total 21 columns):\n",
+            " #   Column                Non-Null Count  Dtype  \n",
+            "---  ------                --------------  -----  \n",
+            " 0   Restaurant ID         9551 non-null   int64  \n",
+            " 1   Restaurant Name       9551 non-null   object \n",
+            " 2   Country Code          9551 non-null   int64  \n",
+            " 3   City                  9551 non-null   object \n",
+            " 4   Address               9551 non-null   object \n",
+            " 5   Locality              9551 non-null   object \n",
+            " 6   Locality Verbose      9551 non-null   object \n",
+            " 7   Longitude             9551 non-null   float64\n",
+            " 8   Latitude              9551 non-null   float64\n",
+            " 9   Cuisines              9542 non-null   object \n",
+            " 10  Average Cost for two  9551 non-null   int64  \n",
+            " 11  Currency              9551 non-null   object \n",
+            " 12  Has Table booking     9551 non-null   object \n",
+            " 13  Has Online delivery   9551 non-null   object \n",
+            " 14  Is delivering now     9551 non-null   object \n",
+            " 15  Switch to order menu  9551 non-null   object \n",
+            " 16  Price range           9551 non-null   int64  \n",
+            " 17  Aggregate rating      9551 non-null   float64\n",
+            " 18  Rating color          9551 non-null   object \n",
+            " 19  Rating text           9551 non-null   object \n",
+            " 20  Votes                 9551 non-null   int64  \n",
+            "dtypes: float64(3), int64(5), object(13)\n",
+            "memory usage: 1.5+ MB\n",
+            "None\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(data.shape)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "f41Lgm4LauZG",
+        "outputId": "4643172d-6cb1-4779-b4da-86ef117c79b9"
+      },
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "(9551, 21)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Task-1: Top Cuisines**"
+      ],
+      "metadata": {
+        "id": "jMabsZOcfkDl"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Determine the top three most common cuisines in the dataset.**"
+      ],
+      "metadata": {
+        "id": "NZNmlttfa9eG"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(data['Cuisines'].value_counts().head(3))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Dw3oYvJeavRF",
+        "outputId": "3c624954-115d-4bf6-8caa-c5a979e3a866"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Cuisines\n",
+            "North Indian             936\n",
+            "North Indian, Chinese    511\n",
+            "Chinese                  354\n",
+            "Name: count, dtype: int64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Calculate the percentage of restaurants that serve each of the top cuisines.**"
+      ],
+      "metadata": {
+        "id": "X3eNPQkfbZXu"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "total_Restaurant=len(data)\n",
+        "print(total_Restaurant)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "bEY-yte7avea",
+        "outputId": "d2d1ab9c-191f-4176-f79d-dd0dc6fc6e78"
+      },
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "9551\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(data['Cuisines'].value_counts().head(10))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "huJ041kPavoa",
+        "outputId": "728f11f5-980f-4dcb-dbec-3256a228ad46"
+      },
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Cuisines\n",
+            "North Indian                      936\n",
+            "North Indian, Chinese             511\n",
+            "Chinese                           354\n",
+            "Fast Food                         354\n",
+            "North Indian, Mughlai             334\n",
+            "Cafe                              299\n",
+            "Bakery                            218\n",
+            "North Indian, Mughlai, Chinese    197\n",
+            "Bakery, Desserts                  170\n",
+            "Street Food                       149\n",
+            "Name: count, dtype: int64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "persentage=(data['Cuisines'].value_counts().head(10)/total_Restaurant)*100\n",
+        "print(persentage)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "d-so24k4blCF",
+        "outputId": "37957e61-a4c0-4a3e-965c-fbf114353748"
+      },
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Cuisines\n",
+            "North Indian                      9.800021\n",
+            "North Indian, Chinese             5.350225\n",
+            "Chinese                           3.706418\n",
+            "Fast Food                         3.706418\n",
+            "North Indian, Mughlai             3.497016\n",
+            "Cafe                              3.130562\n",
+            "Bakery                            2.282484\n",
+            "North Indian, Mughlai, Chinese    2.062611\n",
+            "Bakery, Desserts                  1.779918\n",
+            "Street Food                       1.560046\n",
+            "Name: count, dtype: float64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Task-2: City Analysis**"
+      ],
+      "metadata": {
+        "id": "NFrUH4PugAgV"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Identify the city with the highest number of restaurants in the dataset.**"
+      ],
+      "metadata": {
+        "id": "DN4oWSyrbr0K"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "city_with_restaurant=data['City'].value_counts().head(1)\n",
+        "print(city_with_restaurant)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "CktijvcjbsLz",
+        "outputId": "9aa66234-d154-426f-8837-44e3e63e0718"
+      },
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "City\n",
+            "New Delhi    5473\n",
+            "Name: count, dtype: int64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Calculate the average rating for restaurants in each city.**"
+      ],
+      "metadata": {
+        "id": "mM3zFuCzdLXA"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(data.groupby('City')['Aggregate rating'].mean())"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rYuuu1ldiFa0",
+        "outputId": "bcec8c56-d49a-461a-8977-46bb46d50b62"
+      },
+      "execution_count": 29,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "City\n",
+            "Abu Dhabi          4.300000\n",
+            "Agra               3.965000\n",
+            "Ahmedabad          4.161905\n",
+            "Albany             3.555000\n",
+            "Allahabad          3.395000\n",
+            "                     ...   \n",
+            "Weirton            3.900000\n",
+            "Wellington City    4.250000\n",
+            "Winchester Bay     3.200000\n",
+            "Yorkton            3.300000\n",
+            "��stanbul          4.292857\n",
+            "Name: Aggregate rating, Length: 141, dtype: float64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Determine the city with the highest average rating.**"
+      ],
+      "metadata": {
+        "id": "ZF0w81FldS11"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "city_avg_rating=data.groupby('City')['Aggregate rating'].mean()\n",
+        "print(city_avg_rating)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "kyesvGCebsYD",
+        "outputId": "51e1ba9e-5c99-41a1-e9b8-e558974dfa36"
+      },
+      "execution_count": 17,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "City\n",
+            "Abu Dhabi          4.300000\n",
+            "Agra               3.965000\n",
+            "Ahmedabad          4.161905\n",
+            "Albany             3.555000\n",
+            "Allahabad          3.395000\n",
+            "                     ...   \n",
+            "Weirton            3.900000\n",
+            "Wellington City    4.250000\n",
+            "Winchester Bay     3.200000\n",
+            "Yorkton            3.300000\n",
+            "��stanbul          4.292857\n",
+            "Name: Aggregate rating, Length: 141, dtype: float64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "highest_rating_city=city_avg_rating.idxmax()\n",
+        "print(highest_rating_city)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7N8nHm07dgCc",
+        "outputId": "0da82f26-f439-4dc7-d02b-07972a71a3cc"
+      },
+      "execution_count": 18,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Inner City\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "City_with_highest_avg_rating=city_avg_rating.max()\n",
+        "print(City_with_highest_avg_rating)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rbzrceO-dkKO",
+        "outputId": "7bfa7a88-728a-4bb3-c653-7feb2f419d0e"
+      },
+      "execution_count": 19,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "4.9\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Task-3: Price Range Distribution**"
+      ],
+      "metadata": {
+        "id": "2JZqCzgThFwy"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Calculate the percentage of restaurants in each price range category.**"
+      ],
+      "metadata": {
+        "id": "HPnGTiS5eHsb"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "Price_range_distribution=data['Price range'].value_counts()\n",
+        "print(Price_range_distribution)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "R0PWRaTEdsH3",
+        "outputId": "b54fc6d4-8593-49f6-a6b6-c83ab989ed81"
+      },
+      "execution_count": 23,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Price range\n",
+            "1    4444\n",
+            "2    3113\n",
+            "3    1408\n",
+            "4     586\n",
+            "Name: count, dtype: int64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "percentage_distribution=(Price_range_distribution/total_Restaurant)*100\n",
+        "print(percentage_distribution)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "W-mAiGHbeXl-",
+        "outputId": "43ea1a95-5283-4336-c6d6-58e9bb69fbfa"
+      },
+      "execution_count": 25,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Price range\n",
+            "1    46.529159\n",
+            "2    32.593446\n",
+            "3    14.741912\n",
+            "4     6.135483\n",
+            "Name: count, dtype: float64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Create a histogram or bar chart to visualize the distribution of price ranges among the restaurants.**"
+      ],
+      "metadata": {
+        "id": "9pVMNybQhNyR"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "sns.barplot(x=Price_range_distribution.index,y=Price_range_distribution.values)\n",
+        "plt.title('Distribution of Price Ranges Among Restaurants', fontsize=14)\n",
+        "plt.xlabel('Price Range', fontsize=12)\n",
+        "plt.ylabel('Number of Restaurants', fontsize=12)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 494
+        },
+        "id": "VFQskq5ndsOL",
+        "outputId": "d6187ea7-44aa-44b3-ef32-eeed7f424293"
+      },
+      "execution_count": 24,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Text(0, 0.5, 'Number of Restaurants')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 24
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<Figure size 640x480 with 1 Axes>"
+            ],
+            "image/png": "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PD090adPH/zwww+Ij4/HN998g9DQUGkE6PPPP8dPP/2Er7/+Gv3798fBgwexfv167Ny5U5OngoiIiN5BGgWkgtSpUweDBw/GmDFjcObMmSI9NjExEX379sW///4La2treHl5Ye/evWjdujUAYN68edDT00NQUBAyMjIQEBCAn3/+WXq8vr4+duzYgSFDhsDHxwfm5uYIDg7GtGnTpD7u7u7YuXMnRo4ciQULFqB8+fL47bffOAcSERERSbQekID/rgrT5MTq5cuXF7jcxMQEixcvxuLFi/Pt4+rqqnIITa5FixY4d+5ckesjIiKi94PWr2J78uQJli9fjvLly2t71UREREQlQqMRpJYtW6ptT05ORmxsLDIzM/H777+/UWFEREREuqJRQMrNzVW5ik2hUMDd3R3+/v7o378/qlevrpUCiYiIiEqaRgEpMjJSy2UQERERlR6lbiZtIiIiIl17o6vY7t+/j3PnziElJQW5ubkqy/v25S9oExER0dtHo4D08uVLBAcH46+//pLORxJCAIDSuUkMSERERPQ20ugQ2/jx47Fp0yZ89913iIyMhBACq1atwr59+9CuXTvUqVMH58+f13atRERERCVCo4C0ceNGhISEYMyYMahZsyYAoFy5cvD398eOHTtgY2NT4GSORERERKWZRgEpMTERjRo1AgCYmpoCANLT06XlQUFB2LRpkxbKIyIiIip5GgUkR0dHPHnyBABgZmYGW1tbXLt2TVqempqKly9faqdCIiIiohKm0UnajRs3xtGjRzFmzBgAQIcOHfDjjz/C2dkZubm5mDdvHpo0aaLVQomIiIhKikYjSMOHD0elSpWQkZEBAPj2229hY2ODPn36IDg4GNbW1li4cKFWCyUiIiIqKRqNIPn6+sLX11e6X6FCBVy9ehUXL16Evr4+qlevDgODN5piiYiIiEhnNBpBWr16NW7fvq28Ij091KlTB7Vq1cKDBw+wevVqbdRHREREVOI0CkghISH4+++/811+/PhxhISEaFwUERERkS5pFJDyZs3OT3p6Og+xERER0Vur0CnmwoULiImJke4fOXIE2dnZKv2Sk5OxdOlSVK1aVSsFEhEREZW0QgekzZs3Y+rUqQD++721ZcuWYdmyZWr72tjY8BwkIiIiemsVOiANGjQI7du3hxACjRo1wrRp09CuXTulPgqFAubm5vDw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kQwDEhEREZEMAxIRERGRDAMSERERkQwDEhEREZEMAxIRERGRDAMSERERkQwDEhEREZEMAxIRERGRDAMSERERkQwDEhEREZEMAxIRERGRDAMSERERkQwDEhEREZEMAxIRERGRDAMSERERkQwDEhEREZEMAxIRERGRDAMSERERkQwDEhEREZEMAxIRERGRDAMSERERkYyBrgsgIiJ623iPXq3rEuj/nPmxb7GslyNIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQyDEhEREREMgxIRERERDIMSEREREQy73VAWrx4Mdzc3GBiYoLGjRvj5MmTui6JiIiISoH3NiCtW7cOo0aNwuTJk3H27FnUqVMHAQEBSExM1HVpREREpGPvbUCaO3cuPvvsM4SEhMDT0xNLly6FmZkZVqxYoevSiIiISMfey4CUmZmJM2fOwN/fX2rT09ODv78/oqOjdVgZERERlQYGui5AFx4/foycnBw4OjoqtTs6OiI2Nlalf0ZGBjIyMqT7KSkpAIDU1NQibTcn44UG1VJxKOprpwm+3qUHX+/3C1/v90tRXu+8vkKI1/Z9LwNSUc2cORNTp05Vaa9QoYIOqiFtsF70ua5LoBLE1/v9wtf7/aLJ652WlgZra+sC+7yXAalMmTLQ19dHQkKCUntCQgKcnJxU+o8bNw6jRo2S7ufm5iIpKQn29vZQKBTFXm9pkZqaigoVKuDevXuwsrLSdTlUzPh6v1/4er9f3tfXWwiBtLQ0uLi4vLbvexmQjIyM4O3tjQMHDqBz584A/gs9Bw4cwNChQ1X6Gxsbw9jYWKnNxsamBCotnaysrN6rD9T7jq/3+4Wv9/vlfXy9XzdylOe9DEgAMGrUKAQHB6NBgwZo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\n"
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Task-4: Online Delivery**"
+      ],
+      "metadata": {
+        "id": "ytMSucPjgkJV"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Determine the percentage of restaurants that offer online delivery.**"
+      ],
+      "metadata": {
+        "id": "gsHfkFo3d1-M"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(data['Has Online delivery'].value_counts())"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "OIVLA5-4dr_h",
+        "outputId": "fafe0ad4-71bc-4802-aae9-f52ac8f26c6a"
+      },
+      "execution_count": 21,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Has Online delivery\n",
+            "No     7100\n",
+            "Yes    2451\n",
+            "Name: count, dtype: int64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "persentage_of_Restaurant=(data['Has Online delivery'].value_counts()/total_Restaurant)*100\n",
+        "print(persentage_of_Restaurant)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "JsGQb0Y5dsEp",
+        "outputId": "d029d71a-ee73-4a85-cfa0-a66785926c00"
+      },
+      "execution_count": 22,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Has Online delivery\n",
+            "No     74.337766\n",
+            "Yes    25.662234\n",
+            "Name: count, dtype: float64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# **Compare the average ratings of restaurants with and without online delivery.**"
+      ],
+      "metadata": {
+        "id": "mj8qf4DwdogP"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "average_ratings = data.groupby('Has Online delivery')['Aggregate rating'].mean()\n",
+        "print(average_ratings)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "F4_l-wRJdr1R",
+        "outputId": "346bf55c-fab9-42d4-af05-d91a3163b8ef"
+      },
+      "execution_count": 20,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Has Online delivery\n",
+            "No     2.465296\n",
+            "Yes    3.248837\n",
+            "Name: Aggregate rating, dtype: float64\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
